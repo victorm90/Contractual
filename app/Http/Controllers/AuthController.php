@@ -6,100 +6,56 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    /**
-     * Muestra el formulario de login
-     */
     public function showLoginForm()
     {
         return view('layouts.auth');
     }
 
-    /**
-     * Maneja el login (POST)
-     */
-    public function login(Request $request): RedirectResponse
+    public function login(Request $request)
     {
-        try {
-            $credentials = $request->validate([
-                'identity' => ['required', 'string', 'max:255'],
-                'password' => ['required', 'string'],
-            ]);
+        // Validación corregida
+        $credentials = $request->validate([
+            'identity' => 'required|string|max:15|min:2',
+            'password' => 'required|string'
+        ]);
 
-            $loginField = filter_var($credentials['identity'], FILTER_VALIDATE_EMAIL)
-                ? 'email'
-                : 'username';
+        // Determinar si es email o username
+        $loginField = filter_var($credentials['identity'], FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
 
-            if (!Auth::attempt([$loginField => $credentials['identity'], $credentials['password']], $request->filled('remember'))) {
-                throw ValidationException::withMessages([
-                    'identity' => __('auth.failed'),
-                ]);
-            }
+        // Buscar usuario por el campo correcto
+        $user = User::where($loginField, $credentials['identity'])->first();
 
-            $user = Auth::user();
-
-            if (!$user->is_active) {
-                Auth::logout();
-                throw ValidationException::withMessages([
-                    'identity' => __('auth.inactive'),
-                ]);
-            }
-
-            $request->session()->regenerate();
-
-            return $this->authenticatedRedirect($user);
-        } catch (ValidationException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            Log::error('Login Error: ' . $e->getMessage(), [
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent()
-            ]);
-
-            return back()->withErrors([
-                'system_error' => __('auth.system_error')
-            ]);
+        // Verificar usuario y contraseña
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return back()->withErrors(['identity' => 'Credenciales incorrectas'])->withInput();
         }
+
+        // Verificar si el usuario está activo
+        if (!$user->activo) {
+            return back()->withErrors(['identity' => 'Tu cuenta está inactiva'])->withInput();
+        }
+
+        // Autenticar al usuario
+        Auth::login($user, $request->filled('remember'));
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('home'));
     }
 
-    /**
-     * Maneja el logout
-     */
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $request)
     {
-        try {
-            Auth::logout();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('login')
-                ->with('status', __('auth.logout_success'));
-        } catch (\Exception $e) {
-            Log::critical('Logout Error: ' . $e->getMessage(), [
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent()
-            ]);
-
-            return back()->withErrors([
-                'system_error' => __('auth.system_error')
-            ]);
-        }
-    }
-
-    /**
-     * Redirección post-autenticación
-     */
-    protected function authenticatedRedirect(User $user): RedirectResponse
-    {
-        return match ($user->role) {
-            'admin' => redirect()->intended(route('admin.dashboard')),
-            'commercial' => redirect()->intended(route('commercial.dashboard')),
-            default => redirect()->intended(route('home'))
-        };
+        return redirect()->route('login')->with('success', 'Sesión cerrada correctamente');
     }
 }
