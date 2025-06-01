@@ -22,5 +22,10 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
             'role' => 'admin'
         ]);
+
+        $this->call([
+            ProvinciaSeeder::class,
+             MunicipioSeeder::class,
+        ]);
     }
 }
