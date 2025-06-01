@@ -173,10 +173,26 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-    {
-        // Lógica de eliminación...
-
+{
+    try {
+        // Buscar el usuario o fallar
+        $user = User::findOrFail($id);
+        
+        // Opcional: Evitar que el usuario se elimine a sí mismo
+        if (auth()->id() == $user->id) {
+            return redirect()->route('usuarios')
+                            ->with('error', 'No puedes eliminarte a ti mismo');
+        }
+        
+        // Eliminar el usuario
+        $user->forceDelete();
+        
         return redirect()->route('usuarios')
-            ->with('warning', 'Usuario eliminado del sistema');
+                        ->with('success', 'Usuario eliminado correctamente');
+                        
+    } catch (\Exception $e) {
+        return redirect()->route('usuarios')
+                        ->with('error', 'Error al eliminar usuario: ' . $e->getMessage());
     }
+}
 }

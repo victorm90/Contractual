@@ -1,7 +1,7 @@
 {{-- Modal de edición --}}
 <div x-show="showEditModal" x-cloak
-    class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-navy-700 rounded-lg shadow-lg w-full max-w-md">
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm bg-gray-900/30">
+    <div class="backdrop-blur-lg bg-white/100 dark:bg-navy-700/80 rounded-lg shadow-2xl w-full max-w-md border border-white/20 dark:border-navy-500/30">
         <div class="p-5">
             <h3 class="text-lg font-bold text-gray-800 dark:text-white">Editar Usuario</h3>
 

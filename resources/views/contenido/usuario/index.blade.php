@@ -141,22 +141,21 @@
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                     <div class="flex space-x-2">
                                         <a href="#" @click.prevent="openEditModal({{ $usuario->id }})"
-                                            class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
+                                            class="btn size-8 rounded-full p-0 bg-info/10 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 dark:bg-info/15 dark:hover:bg-info/20 dark:focus:bg-info/20 dark:active:bg-info/25"
                                             title="Editar">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
-                                                </path>
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </a>
                                         <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST"
-                                            onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                                            id="delete-form-{{ $usuario->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
-                                                title="Eliminar">
+                                            <button type="button"
+                                                class="btn size-8 rounded-full p-0 bg-danger/10 text-danger hover:bg-danger/20 focus:bg-danger/20 active:bg-danger/25 dark:bg-danger/15 dark:hover:bg-danger/20 dark:focus:bg-danger/20 dark:active:bg-danger/25"
+                                                title="Eliminar" onclick="confirmDelete({{ $usuario->id }})">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -280,8 +279,8 @@
                                 this.showEditModal = true;
                             })
                             .catch(error => {
-                                console.error('Error al cargar usuario:', error);
-                                alert('Error: ' + error.message);
+                                console.error('error', 'Error al cargar usuario:', error);
+                                window.showAlert('error', 'Error: ' + error.message);
                             });
                     },
 
@@ -305,19 +304,42 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    alert('Usuario actualizado correctamente');
-                                    location.reload();
+                                    window.showAlert('success', 'Usuario Actualizado exitosamente !!',
+                                        data.message);
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1700);
                                 } else {
-                                    alert('Error: ' + (data.message || 'Error desconocido'));
+                                    window.showAlert('error', 'Error: ' + (data.message ||
+                                        'Error desconocido'));
                                 }
                             })
                             .catch(error => {
-                                console.error('Error al actualizar:', error);
-                                alert('Error en la solicitud');
+                                console.error('error', 'Error al actualizar:', error);
+                                window.showAlert('error', 'Error en la solicitud');
                             });
                     }
                 }));
             });
+        </script>
+
+        <script>
+            function confirmDelete(userId) {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esta acción!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`delete-form-${userId}`).submit();
+                    }
+                });
+            }
         </script>
 
         @include('contenido.usuario.edit')
