@@ -3,7 +3,7 @@
 @section('titulo', $titulo)
 
 @section('contenido')
-    <main class="main-content w-full px-[var(--margin-x)] pb-8">
+    <main class="main-content w-full px-[var(--margin-x)] pb-8 " x-data="userModal">
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
                 Gestión de Usuarios
@@ -137,15 +137,16 @@
                                             x-text="estado ? 'Activo' : 'Inactivo'"></span>
                                     </div>
                                 </td>
+
                                 <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                     <div class="flex space-x-2">
-                                        <a href="{{ route('usuarios.edit', $usuario->id) }}"
+                                        <a href="#" @click.prevent="openEditModal({{ $usuario->id }})"
                                             class="btn size-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
                                             title="Editar">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
+                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
                                                 </path>
                                             </svg>
                                         </a>
@@ -159,7 +160,7 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0">
+                                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166M18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0">
                                                     </path>
                                                 </svg>
                                             </button>
@@ -242,5 +243,84 @@
                 };
             }
         </script>
+
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('userModal', () => ({
+                    showEditModal: false,
+                    currentUserId: null,
+                    formData: {
+                        name: '',
+                        username: '',
+                        email: '',
+                        role: 'admin'
+                    },
+
+                    init() {
+                        // Esta función se ejecuta automáticamente al inicializar el componente
+                    },
+
+                    openEditModal(userId) {
+                        this.currentUserId = userId;
+                        console.log('Intentando abrir modal para usuario:', userId);
+
+                        fetch(`/usuarios/${userId}/edit`)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Usuario no encontrado');
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log('Datos recibidos:', data);
+                                this.formData = {
+                                    name: data.name,
+                                    username: data.username,
+                                    email: data.email,
+                                    role: data.role
+                                };
+                                this.showEditModal = true;
+                            })
+                            .catch(error => {
+                                console.error('Error al cargar usuario:', error);
+                                alert('Error: ' + error.message);
+                            });
+                    },
+
+                    submitForm() {
+                        console.log('Enviando formulario para usuario:', this.currentUserId);
+                        const formData = new FormData();
+                        formData.append('_method', 'PUT');
+                        formData.append('name', this.formData.name);
+                        formData.append('username', this.formData.username);
+                        formData.append('email', this.formData.email);
+                        formData.append('role', this.formData.role);
+
+                        fetch(`/usuarios/${this.currentUserId}`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-Token': '{{ csrf_token() }}',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: formData
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert('Usuario actualizado correctamente');
+                                    location.reload();
+                                } else {
+                                    alert('Error: ' + (data.message || 'Error desconocido'));
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error al actualizar:', error);
+                                alert('Error en la solicitud');
+                            });
+                    }
+                }));
+            });
+        </script>
+
+        @include('contenido.usuario.edit')
     </main>
+
 @endsection

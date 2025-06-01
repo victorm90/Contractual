@@ -76,7 +76,15 @@ class UserController extends Controller
                 'role' => 'required|in:admin,comercial',
                 'activo' => 'sometimes|boolean'
             ], [
-                // ... tus mensajes personalizados ...
+                'name.required' => 'El nombre es obligatorio',
+                'username.required' => 'El nombre de usuario es obligatorio',
+                'username.unique' => 'El nombre de usuario ya está en uso',
+                'email.required' => 'El correo electrónico es obligatorio',
+                'email.unique' => 'El correo electrónico ya está registrado',
+                'password.required' => 'La contraseña es obligatoria',
+                'password.min' => 'La contraseña debe tener al menos 5 caracteres',
+                'role.required' => 'Seleccione un rol para el usuario',
+                'role.in' => 'Rol seleccionado inválido',
             ]);
 
             $user = User::create([
@@ -90,7 +98,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Usuario creado con éxito'
+                'message' => 'Usuario creado con éxito',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -102,8 +110,7 @@ class UserController extends Controller
             Log::error('Error al crear usuario: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Error en el servidor',
-                'error' => $e->getMessage()
+                'message' => 'Error en el servidor: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -118,21 +125,50 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    // Método para mostrar datos en modal
+    public function edit($id)
     {
-        //
+        $usuario = User::find($id);
+
+        if (!$usuario) {
+            return response()->json([
+                'error' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        return response()->json([
+            'id' => $usuario->id,
+            'name' => $usuario->name,
+            'username' => $usuario->username,
+            'email' => $usuario->email,
+            'role' => $usuario->role
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
-        // Lógica de actualización...
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:50|unique:users,username,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'role' => 'required|in:admin,comercial'
+        ]);
 
-        return back()->with('info', 'Usuario actualizado correctamente');
+        $usuario = User::find($id);
+
+        if (!$usuario) {
+            return response()->json([
+                'error' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        $usuario->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario actualizado correctamente'
+        ]);
     }
-
     /**
      * Remove the specified resource from storage.
      */

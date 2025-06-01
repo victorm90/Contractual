@@ -83,9 +83,8 @@
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 3000, // Aumentado a 3 segundos
+                timer: 3000,
                 timerProgressBar: true,
-                backdrop: 'rgba(0,0,0,0.1)',
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer);
                     toast.addEventListener('mouseleave', Swal.resumeTimer);

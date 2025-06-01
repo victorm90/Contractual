@@ -21,7 +21,7 @@ Route::prefix('usuarios')->middleware('auth', 'checkrole:admin')->group(function
     Route::post('/', [UserController::class, 'store'])->name('usuarios.store');    
     Route::post('/{id}/estado', [UserController::class, 'estado'])->name('usuarios.estado');
     Route::get('/create', [UserController::class, 'create'])->name('usuarios.create');
-    Route::get('/{usuario}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
+    Route::get('{usuario}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
     Route::put('/{usuario}', [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/{usuario}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 });
