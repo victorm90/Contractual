@@ -22,7 +22,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'role'
+        'role',
+        'activo',
     ];
 
     /**
@@ -47,15 +48,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    // Métodos de ayuda para roles
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
-    }
+   
 
     public function isCommercial(): bool
     {
         return $this->role === 'commercial';
+    }
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'activo' => 'boolean',
+    ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('activo', true);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }

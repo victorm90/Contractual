@@ -11,11 +11,16 @@ use Illuminate\Support\Facades\Gate;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, string $rol): Response
+    public function handle(Request $request, Closure $next, string $ability): Response
     {
+        // Usuario no autenticado
+        if (!Auth::check()) {
+            abort(403, 'Debes iniciar sesión');
+        }
 
-        if (!Auth::check() || Auth::user()->rol !== $rol) {
-            abort(403, 'No tienes permiso para acceder a esta pagina!!.');
+        // Verificar permiso usando Gates
+        if (!Gate::allows($ability)) {
+            abort(403, 'No tienes permiso para acceder a esta página');
         }
 
         return $next($request);
