@@ -9,25 +9,18 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+
+    public function run()
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Manager Proyect',
-            'username' => 'manager',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('admin'),
-            'role' => 'admin'
-        ]);
-
         $this->call([
+            ClasLegalSeeder::class,
+            EmpresaSeeder::class,
+            FormPagoSeeder::class,
             ProvinciaSeeder::class,
             MunicipioSeeder::class,
-            ClasLegalSeeder::class,
+            UserSeeder::class,
+            ContratoSeeder::class,
+            RepresentanteSeeder::class,
         ]);
     }
 }

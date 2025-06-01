@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('empresas', function (Blueprint $table) {
+
             $table->id();
+            $table->string('IdEmpresa', 10)->nullable()->comment('Código único de la empresa');
+            $table->string('NEmpresa', 100)->nullable()->comment('Nombre de la empresa');
+            $table->string('Organismo', 10)->nullable()->comment('Nombre del organismo');
+            $table->boolean('Priorizada')->default(false)->comment('Indica si la empresa está priorizada');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
