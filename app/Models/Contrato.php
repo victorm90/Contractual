@@ -82,6 +82,11 @@ class Contrato extends Model
         return $this->belongsTo(Empresa::class);
     }
 
+    public function representante()
+    {
+        return $this->hasMany(Representante::class);
+    }
+
     public function provincia()
     {
         return $this->belongsTo(Provincia::class);

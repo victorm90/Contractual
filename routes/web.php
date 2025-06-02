@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\UserController;
@@ -24,4 +25,8 @@ Route::prefix('usuarios')->middleware('auth', 'checkrole:admin')->group(function
     Route::get('{usuario}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
     Route::put('/{usuario}', [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/{usuario}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+});
+
+Route::prefix('contratos')->middleware('auth', 'checkrole:admin')->group(function () {
+    Route::get('/', [ContratoController::class, 'index'])->name('contratos');    
 });

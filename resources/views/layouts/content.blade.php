@@ -257,7 +257,7 @@
                             <div class="flex -space-x-3">
                                 <div class="avatar size-8 hover:z-10">
                                     <img class="rounded-full ring ring-white dark:ring-navy-700"
-                                        src="images/avatar/avatar-16.jpg" alt="avatar">
+                                        src="{{ asset('Admin/images/avatar/avatar-16.jpg') }}" alt="avatar">
                                 </div>
                                 <div class="avatar size-8 hover:z-10">
                                     <div
@@ -267,7 +267,7 @@
                                 </div>
                                 <div class="avatar size-8 hover:z-10">
                                     <img class="rounded-full ring ring-white dark:ring-navy-700"
-                                        src="images/avatar/avatar-20.jpg" alt="avatar">
+                                        src="{{ asset('Admin/images/avatar/avatar-20.jpg') }}" alt="avatar">
                                 </div>
                             </div>
                             <button

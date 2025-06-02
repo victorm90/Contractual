@@ -435,7 +435,7 @@
                             <span class="inline-flex size-2 rounded-full bg-secondary"></span>
                         </span>
                     </button>
-                    <div :class="isShowPopper && 'show'" class="popper-root" x-ref="popperRoot">
+                    {{-- <div :class="isShowPopper && 'show'" class="popper-root" x-ref="popperRoot">
                         <div x-data="{ activeTab: 'tabAll' }"
                             class="popper-box mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg border border-slate-150 bg-white shadow-soft dark:border-navy-800 dark:bg-navy-700 dark:shadow-soft-dark sm:m-0 sm:w-80">
                             <div class="rounded-t-lg bg-slate-100 text-slate-600 dark:bg-navy-800 dark:text-navy-200">
@@ -869,7 +869,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Right Sidebar Toggle -->

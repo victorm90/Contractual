@@ -154,7 +154,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
-                                                class="btn size-8 rounded-full p-0 bg-danger/10 text-danger hover:bg-danger/20 focus:bg-danger/20 active:bg-danger/25 dark:bg-danger/15 dark:hover:bg-danger/20 dark:focus:bg-danger/20 dark:active:bg-danger/25"
+                                                class="btn size-8 rounded-full p-0 bg-error/10 text-error hover:bg-error/20 focus:bg-danger/20 active:bg-danger/25 dark:bg-danger/15 dark:hover:bg-danger/20 dark:focus:bg-danger/20 dark:active:bg-danger/25"
                                                 title="Eliminar" onclick="confirmDelete({{ $usuario->id }})">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">

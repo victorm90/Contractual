@@ -6,9 +6,9 @@
             class="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
             <!-- Application Logo -->
             <div class="flex pt-4">
-                <a href="index.htm.html">
+                <a href="{{-- index.htm.html --}}">
                     <img class="size-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
-                        src="images/app-logo.png" alt="logo">
+                        src="{{ asset('Admin/images/app-logo.png') }}" alt="logo">
                 </a>
             </div>
 
@@ -31,19 +31,33 @@
                             d="M17.5 5h-1a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5Z">
                         </path>
                     </svg>
-                </a>               
+                </a>
+
+                <a href="{{ route('contratos') }}"
+                    class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
+                    x-tooltip.placement.right="'Contratos'">
+                    <!-- Ícono de contratos -->
+                    <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+                            fill="currentColor" fill-opacity="0.3" />
+                        <path d="M20 8H14V2L20 8Z" fill="currentColor" />
+                        <path d="M8 12H16" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        <path d="M8 16H16" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        <path d="M8 8H12" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </a>
 
                 <!-- Elements -->
                 <a href="{{ route('usuarios') }}"
                     class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
                     x-tooltip.placement.right="'Usuarios'">
-                    <svg class="h-7 w-7" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
-                            d="M13.3111 14.75H5.03356C3.36523 14.75 2.30189 12.9625 3.10856 11.4958L5.24439 7.60911L7.24273 3.96995C8.07689 2.45745 10.2586 2.45745 11.0927 3.96995L13.1002 7.60911L14.0627 9.35995L15.2361 11.4958C16.0427 12.9625 14.9794 14.75 13.3111 14.75Z"
-                            fill="currentColor"></path>
-                        <path fill-opacity="0.3"
-                            d="M21.1667 15.2083C21.1667 18.4992 18.4992 21.1667 15.2083 21.1667C11.9175 21.1667 9.25 18.4992 9.25 15.2083C9.25 15.0525 9.25917 14.9058 9.26833 14.75H13.3108C14.9792 14.75 16.0425 12.9625 15.2358 11.4958L14.0625 9.36C14.4292 9.28666 14.8142 9.25 15.2083 9.25C18.4992 9.25 21.1667 11.9175 21.1667 15.2083Z"
-                            fill="currentColor"></path>
+                            d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                            fill="currentColor" />
+                        <path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22"
+                            fill="currentColor" fill-opacity="0.3" />
                     </svg>
                 </a>
             </div>
@@ -53,7 +67,7 @@
                 <!-- Profile -->
                 <div x-data="usePopper({ placement: 'right-end', offset: 12 })" @click.outside="isShowPopper && (isShowPopper = false)" class="flex">
                     <button @click="isShowPopper = !isShowPopper" x-ref="popperRef" class="avatar size-12">
-                        <img class="rounded-full" src="images/avatar/avatar-12.jpg" alt="avatar">
+                        <img class="rounded-full" src="{{ asset('Admin/images/avatar/avatar-12.jpg') }}" alt="avatar">
                         <span
                             class="absolute right-0 size-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700"></span>
                     </button>
@@ -64,7 +78,7 @@
                             <div
                                 class="flex items-center space-x-4 rounded-t-lg bg-slate-100 py-5 px-4 dark:bg-navy-800">
                                 <div class="avatar size-14">
-                                    <img class="rounded-full" src="images/avatar/avatar-12.jpg" alt="avatar">
+                                    <img class="rounded-full" src="{{ asset('Admin/images/avatar/avatar-12.jpg') }}" alt="avatar">
                                 </div>
                                 <div>
                                     <a href="#"
@@ -76,7 +90,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="flex flex-col pt-2 pb-5">                                
+                            <div class="flex flex-col pt-2 pb-5">
                                 <a href="#"
                                     class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                     <div
@@ -149,19 +163,11 @@
                 x-init="$el._x_simplebar = new SimpleBar($el);">
                 <ul class="flex flex-1 flex-col px-4 font-inter">
                     <li>
-                        <a x-data="navLink" href="index.htm.html"
+                        <a x-data="navLink" href="#"
                             :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                 'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                             class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
                             CRM Analytics
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-orders.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Orders
                         </a>
                     </li>
                 </ul>
@@ -207,144 +213,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li x-data="accordionItem('menu-item-2')">
-                        <a :class="expanded ? 'text-slate-800 font-semibold dark:text-navy-50' :
-                            'text-slate-600 dark:text-navy-200  hover:text-slate-800  dark:hover:text-navy-50'"
-                            @click="expanded = !expanded"
-                            class="flex items-center justify-between py-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out"
-                            href="javascript:void(0);">
-                            <span>Banking</span>
-                            <svg :class="expanded && 'rotate-90'" xmlns="http://www.w3.org/2000/svg"
-                                class="size-4 text-slate-400 transition-transform ease-in-out" fill="none"
-                                viewbox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                        <ul x-collapse="" x-show="expanded">
-                            <li>
-                                <a x-data="navLink" href="dashboards-banking-1.html"
-                                    :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                        'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                                    class="flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="size-1.5 rounded-full border border-current opacity-40">
-                                        </div>
-                                        <span>Banking v1</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a x-data="navLink" href="dashboards-banking-2.html"
-                                    :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                        'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                                    class="flex items-center justify-between p-2 text-xs+ tracking-wide outline-none transition-[color,padding-left] duration-300 ease-in-out hover:pl-4">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="size-1.5 rounded-full border border-current opacity-40">
-                                        </div>
-                                        <span>Banking v2</span>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-personal.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Personal
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-cms-analytics.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            CMS Analytics
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-influencer.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Influencer
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-travel.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Travel
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-teacher.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Teacher
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-education.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Education
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-authors.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Authors
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-doctor.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Doctors
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-employees.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Employees
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-workspace.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Workspaces
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-meeting.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Meetings
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-project-boards.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Project Boards
-                        </a>
-                    </li>
+                    </li>                    
                 </ul>
                 <div class="my-3 mx-4 h-px bg-slate-200 dark:bg-navy-500"></div>
                 <ul class="flex flex-1 flex-col px-4 font-inter">
@@ -355,15 +224,7 @@
                             class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
                             Widget UI
                         </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="dashboards-widget-contacts.html"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Widget Contacts
-                        </a>
-                    </li>
+                    </li>                    
                 </ul>
             </div>
         </div>

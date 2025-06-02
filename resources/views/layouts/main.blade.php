@@ -56,7 +56,7 @@
         @include('layouts.mobile')
 
         <!-- Right Sidebar -->
-        @include('layouts.rightsidebar')
+        {{-- @include('layouts.rightsidebar') --}}
 
         <!-- Main Content Wrapper -->
         @yield('contenido')
