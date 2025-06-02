@@ -16,7 +16,7 @@
 
     <!-- CSS Assets -->
     <link rel="stylesheet" href="{{ asset('Admin/css/app.css') }}">
-
+   
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
