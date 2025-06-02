@@ -14,6 +14,7 @@ class Contrato extends Model
     protected $table = 'contratos';
 
     protected $fillable = [
+        'numero_contrato',
         'nombre_cliente',
         'descripcion',
         'clas_legal_id',
@@ -80,6 +81,16 @@ class Contrato extends Model
     public function empresa()
     {
         return $this->belongsTo(Empresa::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function lastUpdatedByUser()
+    {
+        return $this->belongsTo(User::class, 'last_updated_by');
     }
 
     public function representante()

@@ -53,4 +53,20 @@ class ContratoController extends Controller
             'vencidosCount'
         ));
     }
+
+    public function show(Contrato $contract)
+    {
+        // Cargar relaciones necesarias para evitar N+1 queries
+        $contract->load([
+            'clasLegal',
+            'empresa',
+            'provincia',
+            'municipio',
+            'formaPago',
+            'user',
+            'lastUpdatedByUser'
+        ]);
+
+        return view('contenido.contratos.show', compact('contract'));
+    }
 }

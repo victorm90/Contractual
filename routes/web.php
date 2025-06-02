@@ -28,5 +28,6 @@ Route::prefix('usuarios')->middleware('auth', 'checkrole:admin')->group(function
 });
 
 Route::prefix('contratos')->middleware('auth', 'checkrole:admin')->group(function () {
-    Route::get('/', [ContratoController::class, 'index'])->name('contratos');    
+    Route::get('/', [ContratoController::class, 'index'])->name('contratos');
+    Route::get('/{contract}', [ContratoController::class, 'show'])->name('contratos.show');   
 });

@@ -280,7 +280,7 @@
                                             <div x-show="open" @click.away="open = false"
                                                 class="absolute right-0 z-10 mt-1 w-48 origin-top-right rounded-md bg-white dark:bg-navy-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                 <div class="py-1">
-                                                    <a href="{{ route('contratos', $contrato->id) }}"
+                                                    <a href="{{ route('contratos.show', $contrato->id) }}"
                                                         class="menu-item group">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                             class="h-4 w-4 mr-2 text-slate-500 group-hover:text-primary"
