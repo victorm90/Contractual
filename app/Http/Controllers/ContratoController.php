@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClasLegal;
 use App\Models\Contrato;
+use App\Models\Empresa;
+use App\Models\FormPago;
+use App\Models\Provincia;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ContratoController extends Controller
@@ -52,6 +57,62 @@ class ContratoController extends Controller
             'vigentesCount',
             'vencidosCount'
         ));
+    }
+
+    public function create()
+    {
+        $titulo = 'Contratos';    
+        $provincias = Provincia::all();
+        $clasificacionesLegales = ClasLegal::all();
+        $empresas = Empresa::all();
+        $formasPago = FormPago::all();
+
+        return view('contenido.contratos.create', compact(
+            'provincias',
+            'clasificacionesLegales',
+            'empresas',
+            'formasPago',
+            'titulo'
+        ));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nombre_cliente' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            // ... otras validaciones
+            'archivo' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        // Generar número de contrato automático
+        $today = Carbon::now();
+        $lastContrato = Contrato::whereDate('created_at', $today)->orderBy('id', 'desc')->first();
+        $sequence = $lastContrato ? intval(substr($lastContrato->numero_contrato, -3)) + 1 : 1;
+        $numeroContrato = $today->format('Ymd') . str_pad($sequence, 3, '0', STR_PAD_LEFT);
+
+        $contratoData = $request->except('archivo');
+        $contratoData['numero_contrato'] = $numeroContrato;
+        $contratoData['user_id'] = auth()->id();
+        $contratoData['last_updated_by'] = auth()->id();
+
+        if ($request->hasFile('archivo')) {
+            $file = $request->file('archivo');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('contratos', $fileName, 'public');
+
+            $contratoData['archivo_path'] = '/storage/' . $filePath;
+            $contratoData['archivo_mime'] = $file->getClientMimeType();
+        }
+
+        Contrato::create($contratoData);
+
+        return redirect()->route('contratos')->with('success', 'Contrato creado exitosamente.');
+    }
+
+    public function getMunicipiosByProvincia(Provincia $provincia)
+    {
+        return response()->json($provincia->municipios);
     }
 
     public function show(Contrato $contract)

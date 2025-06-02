@@ -102,16 +102,14 @@
                 </div>
 
                 <!-- Botón de nuevo contrato con efecto hover -->
-                <div x-data="{ showModal: false }">
-                    <button @click="showModal = true"
-                        class="btn bg-primary text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/20 focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90 transform transition duration-300 hover:scale-[1.02]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 mr-1" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        <span>Añadir</span>
-                    </button>
-                </div>
+                <a href="{{ route('contratos.create') }}"
+                    class="btn bg-primary text-white hover:bg-primary-focus hover:shadow-lg hover:shadow-primary/20 focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90 transform transition duration-300 hover:scale-[1.02]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 mr-1" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Añadir</span>
+                </a>
             </div>
         </div>
 
