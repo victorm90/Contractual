@@ -10,17 +10,27 @@ class ContratoController extends Controller
     public function index(Request $request)
     {
         $titulo = 'Contratos';
-        
+
         $search = $request->input('search');
         $estado = $request->input('estado');
 
-        $contratos = Contrato::query()
-            ->with(['clasLegal', 'empresa', 'provincia', 'municipio', 'formaPago'])
+        $contratosQuery = Contrato::query()
+            ->with(['clasLegal', 'empresa', 'provincia', 'municipio', 'formaPago']);
+
+        // Contadores globales (sin paginación ni filtros por estado o búsqueda)
+        $totalContratos = $contratosQuery->count();
+        $vigentesCount = (clone $contratosQuery)->where('fecha_vencimiento', '>=', now()->toDateString())->count();
+        $vencidosCount = (clone $contratosQuery)->where('fecha_vencimiento', '<', now()->toDateString())->count();
+
+        // Aplicar filtros de búsqueda y estado
+        $contratos = $contratosQuery
             ->when($search, function ($query, $search) {
-                return $query->where('nombre_cliente', 'like', "%{$search}%")
-                    ->orWhere('descripcion', 'like', "%{$search}%")
-                    ->orWhere('cod_reuup', 'like', "%{$search}%")
-                    ->orWhere('codigo_nit', 'like', "%{$search}%");
+                return $query->where(function ($q) use ($search) {
+                    $q->where('nombre_cliente', 'like', "%{$search}%")
+                        ->orWhere('descripcion', 'like', "%{$search}%")
+                        ->orWhere('cod_reuup', 'like', "%{$search}%")
+                        ->orWhere('codigo_nit', 'like', "%{$search}%");
+                });
             })
             ->when($estado, function ($query, $estado) {
                 if ($estado === 'vigente') {
@@ -31,8 +41,16 @@ class ContratoController extends Controller
                 return $query;
             })
             ->orderBy('fecha_vencimiento', 'asc')
-            ->paginate(15);
+            ->paginate(8);
 
-        return view('contenido.contratos.index', compact('contratos', 'search', 'estado','titulo'));
+        return view('contenido.contratos.index', compact(
+            'contratos',
+            'search',
+            'estado',
+            'titulo',
+            'totalContratos',
+            'vigentesCount',
+            'vencidosCount'
+        ));
     }
 }
